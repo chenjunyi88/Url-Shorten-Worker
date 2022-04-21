@@ -5,41 +5,38 @@ const github_repo = typeof(GITHUB_REPO)!="undefined" ? GITHUB_REPO
 const github_version = typeof(GITHUB_VERSION)!="undefined" ? GITHUB_VERSION
     : '@main'
 // 密码，密码正确情况无视白名单和超时设置，且支持自定义短链接，
-const password = typeof(PASSWORD)!="undefined" ? PASSWORD
-    : 'AoEiuV020 yes'
+//const password = typeof(PASSWORD)!="undefined" ? PASSWORD
+//    : "<password>" 屏蔽后，环境变量直接起作用6-1
 // 短链超时，单位毫秒，支持整数乘法，0表示不设置超时，
 const shorten_timeout = typeof(SHORTEN_TIMEOUT)!="undefined" ? SHORTEN_TIMEOUT.split("*").reduce((a,b)=>parseInt(a)*parseInt(b),1)
-    : (1000 * 60 * 10)
+    : (0*0*0)
 // 默认短链key的长度，遇到重复时会自动延长，
 const default_len = typeof(DEFAULT_LEN)!="undefined" ? parseInt(DEFAULT_LEN)
-    : 6
+    : 3
 // 为true开启演示，否则无密码且非白名单请求不受理，是则允许访客试用，超时后失效，
 const demo_mode = typeof(DEMO_MODE)!="undefined" ? DEMO_MODE === 'true'
     : true
 // 为true自动删除超时的演示短链接记录，否则仅是标记过期，以便在后台查询历史记录，
 const remove_completely = typeof(REMOVE_COMPLETELY)!="undefined" ? REMOVE_COMPLETELY === 'true'
-    : true
+    : false
 // 白名单中的域名无视超时，json数组格式，写顶级域名就可以，自动通过顶级域名和所有二级域名，
-const white_list = JSON.parse(typeof(WHITE_LIST)!="undefined" ? WHITE_LIST
-    : `[
-"aoeiuv020.com",
-"aoeiuv020.cn",
-"aoeiuv020.cc",
-"020.name"
-    ]`)
+ const white_list = JSON.parse(typeof(WHITE_LIST)!="undefined" ? WHITE_LIST
+     : `[
+"10w.fun"
+     ]`)
 // 演示模式开启时网页上展示这段禁止滥用提示，并不需要明确表示什么时候失效，
 const demo_notice = typeof(DEMO_NOTICE)!="undefined" ? DEMO_NOTICE
-    : `注意：为防止示例服务被人滥用，故所有由demo网站生成的链接随时可能失效，如需长期使用请自行搭建。`
+    : ``
 //console.log(`${github_repo}, ${github_version}, ${password}, ${shorten_timeout}, ${demo_mode}, ${white_list}, ${demo_notice}`)
 const html404 = `<!DOCTYPE html>
 <body>
-  <h1>404 Not Found.</h1>
-  <p>The url you visit is not found.</p>
+  <h1>404 页面失联.</h1>
+  <p>很遗憾，该短链接已失效.</p>
 </body>`
 
 
 async function randomString(len) {
-  　　let $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+  　　let $chars = 'abcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1,ABCDEFGHJKMNPQRSTWXYZ****/
   　　let maxPos = $chars.length;
 　　let result = '';
 　　for (i = 0; i < len; i++) {
@@ -144,7 +141,7 @@ async function handleRequest(request) {
     console.log("admin " + admin)
     if(!await checkURL(req["url"]) || (!admin && !demo_mode && !await checkWhite(new URL(req["url"]).host))){
     // 非演示模式下，非白名单地址当成地址不合法处理，
-    return new Response(`{"status":500,"key":": Error: Url illegal."}`, {
+    return new Response(`{"status":500,"key":": 错误: 链接格式错误."}`, {
       headers: {
       "content-type": "text/html;charset=UTF-8",
       "Access-Control-Allow-Origin":"*",
@@ -162,7 +159,7 @@ async function handleRequest(request) {
       },
     })
     }else{
-      return new Response(`{"status":200,"key":": Error:Reach the KV write limitation."}`, {
+      return new Response(`{"status":200,"key":": 错误提示:数据库已达到极限."}`, {
       headers: {
       "content-type": "text/html;charset=UTF-8",
       "Access-Control-Allow-Origin":"*",
@@ -186,6 +183,8 @@ async function handleRequest(request) {
   if(!path){
 
     const html= await fetch(`https://cdn.jsdelivr.net/gh/${github_repo}${github_version}/index.html`)
+    //const html= await fetch(`https://raw.githubusercontent.com/chenjunyi88/Url-Shorten-Worker-xytom-cn/gh-pages/index-key.html`)
+    
     const text = (await html.text())
         .replaceAll("###GITHUB_REPO###", github_repo)
         .replaceAll("###GITHUB_VERSION###", github_version)

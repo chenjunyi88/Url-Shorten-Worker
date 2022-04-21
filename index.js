@@ -182,8 +182,8 @@ async function handleRequest(request) {
   console.log(path)
   if(!path){
 
-    const html= await fetch(`https://cdn.jsdelivr.net/gh/${github_repo}${github_version}/index.html`)
-    //const html= await fetch(`https://raw.githubusercontent.com/chenjunyi88/Url-Shorten-Worker-xytom-cn/gh-pages/index-key.html`)
+    //const html= await fetch(`https://cdn.jsdelivr.net/gh/${github_repo}${github_version}/index.html`)
+    const html= await fetch(`https://cdn.jsdelivr.net/gh/chenjunyi88/Url-Shorten-Worker@main/index.html`)
     
     const text = (await html.text())
         .replaceAll("###GITHUB_REPO###", github_repo)

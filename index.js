@@ -6,7 +6,7 @@ const github_version = typeof(GITHUB_VERSION)!="undefined" ? GITHUB_VERSION
     : '@main'
 // 密码，密码正确情况无视白名单和超时设置，且支持自定义短链接，
 //const password = typeof(PASSWORD)!="undefined" ? PASSWORD
-//    : "<password>" 屏蔽后，环境变量直接起作用6-1
+//    : "<password>" 屏蔽后，CF的环境变量直接起作用6-1
 // 短链超时，单位毫秒，支持整数乘法，0表示不设置超时，
 const shorten_timeout = typeof(SHORTEN_TIMEOUT)!="undefined" ? SHORTEN_TIMEOUT.split("*").reduce((a,b)=>parseInt(a)*parseInt(b),1)
     : (0*0*0)
@@ -183,7 +183,7 @@ async function handleRequest(request) {
   if(!path){
 
     //const html= await fetch(`https://cdn.jsdelivr.net/gh/${github_repo}${github_version}/index.html`)
-    const html= await fetch(`https://cdn.jsdelivr.net/gh/chenjunyi88/Url-Shorten-Worker@main/index.html`)
+    const html= await fetch(`https://cdn.jsdelivr.net/gh/chenjunyi88/Url-Shorten-Worker@main/index-cn.html`)
     
     const text = (await html.text())
         .replaceAll("###GITHUB_REPO###", github_repo)

@@ -1,3 +1,32 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@chenjunyi88 
+chenjunyi88
+/
+Url-Shorten-Worker
+Public
+forked from AoEiuV020/Url-Shorten-Worker
+Code
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+Url-Shorten-Worker/index-cn2.html
+@chenjunyi88
+chenjunyi88 Rename index-cn.html to index-cn2.html
+Latest commit 10c883a 9 minutes ago
+ History
+ 1 contributor
+127 lines (126 sloc)  4.99 KB
+   
 <!doctype html>
 <html>
 <head>
@@ -70,9 +99,18 @@
   <script>
 function openurl()
 {   
-  document.getElementById("text2").value="https://s.10w.fun/"+document.getElementById("text").value;
-	url = document.getElementById('text2').value;
-	window.open(url)
+ var text=document.getElementById("text").value;
+ var reg=/http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/i;
+ if(!reg.test(text)){
+ //alert("这网址不是以http://https://开头，或者不是网址！");
+ document.getElementById("text2").value="https://s.10w.fun/"+document.getElementById("text").value;
+ url = document.getElementById('text2').value;
+ window.open(url)
+ }
+ else{
+ //alert("输入成功");
+ shorturl()
+ }
 }
 </script>
 </head>
@@ -83,9 +121,10 @@ function openurl()
       <form>
       <h5 class="card-title">请输入链接(包含https) :</h5>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="例如: https://example.com/path?key=urlEncodedValue" id="text">
+        <input type="text" class="form-control" placeholder="例如: https://example.com/path?key=urlEncodedValue" id="text"><input type="hidden" id="text2">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="submit" onclick='shorturl()' id="searchbtn">生成</button><input type="hidden" id="text2"><input type="button" value="打开链接" onclick="openurl()">
+		  <button class="btn btn-primary" type="submit" onclick="openurl()"id="searchbtn">Go</button>
+          <button class="btn btn-secondary" type="button" onclick='shorturl()'id="searchbtn">生成</button>
         </div>
       </div>    
       <div class="card-text">
@@ -125,3 +164,15 @@ function openurl()
   <script src="https://cdn.jsdelivr.net/gh/chenjunyi88/Url-Shorten-Worker@main/main-cn.js" crossorigin="anonymous"></script>
 </body>
 </html>
+© 2022 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

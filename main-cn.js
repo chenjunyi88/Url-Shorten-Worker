@@ -17,14 +17,14 @@ let res
   .then(function(myJson) {
     res = myJson;
     document.getElementById("searchbtn").disabled=false;
-	document.getElementById("searchbtn").innerHTML=' 生成';
+	document.getElementById("searchbtn").innerHTML=' Go';
     if(res.key!=="")
     document.getElementById("result").innerHTML=window.location.origin+res.key;
     $('#exampleModal').modal('show')
   }).catch(function(err){alert("发生未知错误，请重试!");
   console.log(err);
   document.getElementById("searchbtn").disabled=false;
-	document.getElementById("searchbtn").innerHTML=' 生成';})
+	document.getElementById("searchbtn").innerHTML=' Go';})
   }
   function copyurl (id, attr) {
     let target = null;

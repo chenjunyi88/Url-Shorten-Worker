@@ -67,6 +67,14 @@
       }
     } 
   </style>
+  <script>
+function openurl()
+{   
+  document.getElementById("text2").value="https://s.10w.fun/"+document.getElementById("text").value;
+	url = document.getElementById('text2').value;
+	window.open(url)
+}
+</script>
 </head>
 <body>
   <div class="card">
@@ -77,7 +85,7 @@
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="例如: https://example.com/path?key=urlEncodedValue" id="text">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="submit" onclick='shorturl()' id="searchbtn">生成</button>
+          <button class="btn btn-primary" type="submit" onclick='shorturl()' id="searchbtn">生成</button><input type="hidden" id="text2"><input type="button" value="打开链接" onclick="openurl()">
         </div>
       </div>    
       <div class="card-text">
